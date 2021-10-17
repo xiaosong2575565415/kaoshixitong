@@ -1,0 +1,735 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>考试系统接口测试报告</title>
+    <meta name="generator" content="HTMLTestRunner 0.8.2.1"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link href="http://libs.baidu.com/bootstrap/3.0.3/css/bootstrap.min.css" rel="stylesheet">
+    <script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+    <script src="http://libs.baidu.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
+    
+<style type="text/css" media="screen">
+body        { font-family: Microsoft YaHei,Tahoma,arial,helvetica,sans-serif;padding: 20px; font-size: 80%; }
+table       { font-size: 100%; }
+/* -- heading ---------------------------------------------------------------------- */
+.heading {
+    margin-top: 0ex;
+    margin-bottom: 1ex;
+}
+.heading .description {
+    margin-top: 4ex;
+    margin-bottom: 6ex;
+}
+/* -- report ------------------------------------------------------------------------ */
+#total_row  { font-weight: bold; }
+.passCase   { color: #5cb85c; }
+.failCase   { color: #d9534f; font-weight: bold; }
+.errorCase  { color: #f0ad4e; font-weight: bold; }
+.hiddenRow  { display: none; }
+.testcase   { margin-left: 2em; }
+</style>
+
+</head>
+<body >
+<script language="javascript" type="text/javascript">
+output_list = Array();
+/*level 调整增加只显示通过用例的分类 --Findyou
+0:Summary //all hiddenRow
+1:Failed  //pt hiddenRow, ft none
+2:Pass    //pt none, ft hiddenRow
+3:All     //pt none, ft none
+4:Error  
+*/
+function showCase(level) {
+    trs = document.getElementsByTagName("tr");
+    for (var i = 0; i < trs.length; i++) {
+        tr = trs[i];
+        id = tr.id;
+        if (id.substr(0,2) == 'ft') {
+            if (level == 2 || level == 0 ) {
+                tr.className = 'hiddenRow';
+            }
+            else {
+                tr.className = '';
+            }
+        }
+        if (id.substr(0,2) == 'pt') {
+            if (level < 2 || level ==4) {
+                tr.className = 'hiddenRow';
+            }
+            else {
+                tr.className = '';
+            }
+        }
+    }
+    //加入【详细】切换文字变化 --Findyou
+    detail_class=document.getElementsByClassName('case_detail');
+    //console.log(detail_class.length)
+    if (level == 3) {
+        for (var i = 0; i < detail_class.length; i++){
+            detail_class[i].innerHTML="收起"
+        }
+    }
+    else{
+            for (var i = 0; i < detail_class.length; i++){
+            detail_class[i].innerHTML="详细"
+        }
+    }
+}
+function showClassDetail(cid, count) {
+    var id_list = Array(count);
+    var toHide = 1;
+    for (var i = 0; i < count; i++) {
+        //ID修改 点 为 下划线 -Findyou
+        tid0 = 't' + cid.substr(1) + '_' + (i+1);
+        tid = 'f' + tid0;
+        tr = document.getElementById(tid);
+        if (!tr) {
+            tid = 'p' + tid0;
+            tr = document.getElementById(tid);
+        }
+        id_list[i] = tid;
+        if (tr.className) {
+            toHide = 0;
+        }
+    }
+    for (var i = 0; i < count; i++) {
+        tid = id_list[i];
+        //修改点击无法收起的BUG，加入【详细】切换文字变化 --Findyou
+        if (toHide) {
+            document.getElementById(tid).className = 'hiddenRow';
+            document.getElementById(cid).innerText = "详细"
+        }
+        else {
+            document.getElementById(tid).className = '';
+            document.getElementById(cid).innerText = "收起"
+        }
+    }
+}
+function html_escape(s) {
+    s = s.replace(/&/g,'&amp;');
+    s = s.replace(/</g,'&lt;');
+    s = s.replace(/>/g,'&gt;');
+    return s;
+}
+</script>
+<div class='heading'>
+<h4 style="font-family: Microsoft YaHei">考试系统接口测试报告</h4>
+<p class='attribute'><strong>测试人员 : </strong> 谭积金</p>
+<p class='attribute'><strong>开始时间 : </strong> 2021-10-17 15:40:26</p>
+<p class='attribute'><strong>合计耗时 : </strong> 0:00:04.345714</p>
+<p class='attribute'><strong>测试结果 : </strong> 共 20，通过 18，失败 2，通过率= 90.00%</p>
+
+<p class='description'>执行情况：</p>
+</div>
+
+
+<p id='show_detail_line'>
+<a class="btn btn-primary" href='javascript:showCase(0)'>概要{ 90.00% }</a>
+<a class="btn btn-warning" href='javascript:showCase(4)'>错误{ 0 }</a>
+<a class="btn btn-danger" href='javascript:showCase(1)'>失败{ 2 }</a>
+<a class="btn btn-success" href='javascript:showCase(2)'>通过{ 18 }</a>
+<a class="btn btn-info" href='javascript:showCase(3)'>所有{ 20 }</a>
+</p>
+<table id='result_table' class="table table-condensed table-bordered table-hover">
+<colgroup>
+<col align='left' />
+<col align='right' />
+<col align='right' />
+<col align='right' />
+<col align='right' />
+<col align='right' />
+<col align='right' />
+</colgroup>
+<tr id='header_row' class="text-center success" style="font-weight: bold;font-size: 14px;">
+    <td>用例集/测试用例</td>
+    <td>总计</td>
+    <td>通过</td>
+    <td>失败</td>
+    <td>错误</td>
+    <td>详细</td>
+    <td>截图</td>
+</tr>
+
+<tr class='failClass warning'>
+    <td>kaoshihoutai.HouTai</td>
+    <td class="text-center">10</td>
+    <td class="text-center">9</td>
+    <td class="text-center">1</td>
+    <td class="text-center">0</td>
+    <td class="text-center"><a href="javascript:showClassDetail('c1',10)" class="case_detail" id='c1'>详细</a></td>
+    <td class="text-center">Assert or Error Image</td>
+</tr>
+
+<tr id='pt1_1' class='hiddenRow'>
+    <td class='passCase' width='300px'><div class='testcase'>test_001_login</div></td>
+    <td colspan='5' align='left' width='600px'> <!--print 输出框位置-->
+    <!--默认收起错误信息 -Findyou
+    <button id='btn_pt1_1' type="button"  class="btn btn-danger btn-xs collapsed" data-toggle="collapse" data-target='#div_pt1_1'>通过</button>
+    <div id='div_pt1_1' class="collapse">  -->
+    <!-- 默认展开错误信息 -Findyou -->
+    <button id='btn_pt1_1' type="button"  class="btn btn-danger btn-xs" data-toggle="collapse" data-target='#div_pt1_1'>通过</button>
+    <div id='div_pt1_1' class="collapse in">
+    <pre style="overflow-y:scroll; overflow-x:hidden;height:200px; width:600px; margin:auto; border:1px solid #e1e1e1;">
+    
+pt1_1: {'code': 1, 'message': '成功', 'response': {'id': None, 'userUuid': None, 'userName': 'admin', 'password': None, 'realName': None, 'age': None, 'sex': None, 'birthDay': None, 'userLevel': None, 'phone': None, 'role': None, 'status': None, 'imagePath': None, 'createTime': None, 'modifyTime': None, 'lastActiveTime': None, 'deleted': None, 'wxOpenId': None}}
+
+
+    </pre>
+    </div>
+    </td>
+    <td align="right">
+        <a hidden="hidden" href="../images/">
+            <img   src="../images/" height="200px" width="400px"/>
+        </a>
+    </td>
+</tr>
+
+
+
+<tr id='pt1_2' class='hiddenRow'>
+    <td class='passCase' width='300px'><div class='testcase'>test_002_xueshenglist</div></td>
+    <td colspan='5' align='left' width='600px'> <!--print 输出框位置-->
+    <!--默认收起错误信息 -Findyou
+    <button id='btn_pt1_2' type="button"  class="btn btn-danger btn-xs collapsed" data-toggle="collapse" data-target='#div_pt1_2'>通过</button>
+    <div id='div_pt1_2' class="collapse">  -->
+    <!-- 默认展开错误信息 -Findyou -->
+    <button id='btn_pt1_2' type="button"  class="btn btn-danger btn-xs" data-toggle="collapse" data-target='#div_pt1_2'>通过</button>
+    <div id='div_pt1_2' class="collapse in">
+    <pre style="overflow-y:scroll; overflow-x:hidden;height:200px; width:600px; margin:auto; border:1px solid #e1e1e1;">
+    
+pt1_2: N2RjODNhNmUtMjM0My00OTJlLTg3NGMtMDFiZmMyNWZlYzZm
+{'code': 1, 'message': '成功', 'response': {'total': 39729, 'list': [{'id': 100861274, 'userUuid': 'bde5bf17-6f6c-43c8-b83b-ee975fe4daa7', 'userName': 'xialuoke', 'realName': '夏洛克', 'age': 32, 'role': 1, 'sex': 1, 'birthDay': '1921-07-12 00:00:00', 'phone': '221', 'lastActiveTime': '2021-10-17 15:33:31', 'createTime': '2021-10-17 15:33:31', 'modifyTime': '2021-10-17 15:40:01', 'status': 2, 'userLevel': 12, 'imagePath': None}, {'id': 100861271, 'userUuid': 'de22f716-0486-4b7a-a6e1-1c91296dd07c', 'userName': '12345678901029837487583733527647474673636', 'realName': None, 'age': None, 'role': 1, 'sex': None, 'birthDay': '', 'phone': None, 'lastActiveTime': '2021-10-17 11:34:34', 'createTime': '2021-10-17 11:34:34', 'modifyTime': '', 'status': 1, 'userLevel': 1, 'imagePath': None}, {'id': 100861270, 'userUuid': 'b0108214-18ee-4fe7-83c3-e4ceb1c14fae', 'userName': 'shiwan5', 'realName': None, 'age': None, 'role': 1, 'sex': None, 'birthDay': '', 'phone': None, 'lastActiveTime': '2021-10-17 11:13:39', 'createTime': '2021-10-17 11:13:39', 'modifyTime': '', 'status': 1, 'userLevel': 18, 'imagePath': None}, {'id': 100861269, 'userUuid': '29398d44-a175-4977-959f-a53c8de13d53', 'userName': 'cz00010', 'realName': None, 'age': None, 'role': 1, 'sex': None, 'birthDay': '', 'phone': None, 'lastActiveTime': '2021-10-17 11:12:37', 'createTime': '2021-10-17 11:12:37', 'modifyTime': '', 'status': 1, 'userLevel': 10, 'imagePath': None}, {'id': 100861268, 'userUuid': 'e7eaa62d-2e17-435c-a7c7-68bfd132dd29', 'userName': 'cz00009', 'realName': None, 'age': None, 'role': 1, 'sex': None, 'birthDay': '', 'phone': None, 'lastActiveTime': '2021-10-17 11:12:37', 'createTime': '2021-10-17 11:12:37', 'modifyTime': '', 'status': 1, 'userLevel': 9, 'imagePath': None}, {'id': 100861267, 'userUuid': '5433b79a-fe44-4701-b213-2b37d950ceff', 'userName': 'cz00008', 'realName': None, 'age': None, 'role': 1, 'sex': None, 'birthDay': '', 'phone': None, 'lastActiveTime': '2021-10-17 11:12:36', 'createTime': '2021-10-17 11:12:36', 'modifyTime': '', 'status': 1, 'userLevel': 8, 'imagePath': None}, {'id': 100861266, 'userUuid': '0a7284a2-a6f3-4939-a32a-d9758138ce6b', 'userName': 'cz00007', 'realName': None, 'age': None, 'role': 1, 'sex': None, 'birthDay': '', 'phone': None, 'lastActiveTime': '2021-10-17 11:12:36', 'createTime': '2021-10-17 11:12:36', 'modifyTime': '', 'status': 1, 'userLevel': 7, 'imagePath': None}, {'id': 100861265, 'userUuid': 'b0431ee2-bbd4-4be3-ab47-19b9c4b981de', 'userName': 'cz00006', 'realName': None, 'age': None, 'role': 1, 'sex': None, 'birthDay': '', 'phone': None, 'lastActiveTime': '2021-10-17 11:12:36', 'createTime': '2021-10-17 11:12:36', 'modifyTime': '', 'status': 1, 'userLevel': 6, 'imagePath': None}, {'id': 100861264, 'userUuid': 'ccc9e3b3-b402-4c5a-b015-9f18cc93ab8c', 'userName': 'cz00005', 'realName': None, 'age': None, 'role': 1, 'sex': None, 'birthDay': '', 'phone': None, 'lastActiveTime': '2021-10-17 11:12:36', 'createTime': '2021-10-17 11:12:36', 'modifyTime': '', 'status': 1, 'userLevel': 5, 'imagePath': None}, {'id': 100861263, 'userUuid': '642db62b-fb2c-4d82-9d7e-4bfedebb85f6', 'userName': 'cz00004', 'realName': None, 'age': None, 'role': 1, 'sex': None, 'birthDay': '', 'phone': None, 'lastActiveTime': '2021-10-17 11:12:36', 'createTime': '2021-10-17 11:12:36', 'modifyTime': '', 'status': 1, 'userLevel': 4, 'imagePath': None}], 'pageNum': 1, 'pageSize': 10, 'size': 10, 'startRow': 1, 'endRow': 10, 'pages': 3973, 'prePage': 0, 'nextPage': 2, 'isFirstPage': True, 'isLastPage': False, 'hasPreviousPage': False, 'hasNextPage': True, 'navigatePages': 8, 'navigatepageNums': [1, 2, 3, 4, 5, 6, 7, 8], 'navigateFirstPage': 1, 'navigateLastPage': 8}}
+
+
+    </pre>
+    </div>
+    </td>
+    <td align="right">
+        <a hidden="hidden" href="../images/">
+            <img   src="../images/" height="200px" width="400px"/>
+        </a>
+    </td>
+</tr>
+
+
+
+<tr id='pt1_3' class='hiddenRow'>
+    <td class='passCase' width='300px'><div class='testcase'>test_003_jinyong</div></td>
+    <td colspan='5' align='left' width='600px'> <!--print 输出框位置-->
+    <!--默认收起错误信息 -Findyou
+    <button id='btn_pt1_3' type="button"  class="btn btn-danger btn-xs collapsed" data-toggle="collapse" data-target='#div_pt1_3'>通过</button>
+    <div id='div_pt1_3' class="collapse">  -->
+    <!-- 默认展开错误信息 -Findyou -->
+    <button id='btn_pt1_3' type="button"  class="btn btn-danger btn-xs" data-toggle="collapse" data-target='#div_pt1_3'>通过</button>
+    <div id='div_pt1_3' class="collapse in">
+    <pre style="overflow-y:scroll; overflow-x:hidden;height:200px; width:600px; margin:auto; border:1px solid #e1e1e1;">
+    
+pt1_3: NDZjMTM0ZDItOGM5Ny00NzgzLWJiNGItOGRhNmNkYjY4NmQ4
+{'code': 1, 'message': '成功', 'response': 1}
+
+
+    </pre>
+    </div>
+    </td>
+    <td align="right">
+        <a hidden="hidden" href="../images/">
+            <img   src="../images/" height="200px" width="400px"/>
+        </a>
+    </td>
+</tr>
+
+
+
+<tr id='pt1_4' class='hiddenRow'>
+    <td class='passCase' width='300px'><div class='testcase'>test_004_qiyong</div></td>
+    <td colspan='5' align='left' width='600px'> <!--print 输出框位置-->
+    <!--默认收起错误信息 -Findyou
+    <button id='btn_pt1_4' type="button"  class="btn btn-danger btn-xs collapsed" data-toggle="collapse" data-target='#div_pt1_4'>通过</button>
+    <div id='div_pt1_4' class="collapse">  -->
+    <!-- 默认展开错误信息 -Findyou -->
+    <button id='btn_pt1_4' type="button"  class="btn btn-danger btn-xs" data-toggle="collapse" data-target='#div_pt1_4'>通过</button>
+    <div id='div_pt1_4' class="collapse in">
+    <pre style="overflow-y:scroll; overflow-x:hidden;height:200px; width:600px; margin:auto; border:1px solid #e1e1e1;">
+    
+pt1_4: Yzg1ZGFiNWUtMGFmOS00NDRhLTlmYWQtNzQ1M2FlZWVmNzM0
+{'code': 1, 'message': '成功', 'response': 1}
+
+
+    </pre>
+    </div>
+    </td>
+    <td align="right">
+        <a hidden="hidden" href="../images/">
+            <img   src="../images/" height="200px" width="400px"/>
+        </a>
+    </td>
+</tr>
+
+
+
+<tr id='pt1_5' class='hiddenRow'>
+    <td class='passCase' width='300px'><div class='testcase'>test_005_edit</div></td>
+    <td colspan='5' align='left' width='600px'> <!--print 输出框位置-->
+    <!--默认收起错误信息 -Findyou
+    <button id='btn_pt1_5' type="button"  class="btn btn-danger btn-xs collapsed" data-toggle="collapse" data-target='#div_pt1_5'>通过</button>
+    <div id='div_pt1_5' class="collapse">  -->
+    <!-- 默认展开错误信息 -Findyou -->
+    <button id='btn_pt1_5' type="button"  class="btn btn-danger btn-xs" data-toggle="collapse" data-target='#div_pt1_5'>通过</button>
+    <div id='div_pt1_5' class="collapse in">
+    <pre style="overflow-y:scroll; overflow-x:hidden;height:200px; width:600px; margin:auto; border:1px solid #e1e1e1;">
+    
+pt1_5: YmY3MmMxMWItMDc3Ny00NDM1LWFmODYtNjgxMTJjMWJiNWEz
+{'code': 1, 'message': '成功', 'response': {'id': 551, 'userUuid': None, 'userName': 'mb210061050', 'password': 'Hk+Etm0prRpORzHYcaL7efXrbcdo9VPsipGcaEKVus/ngQ+fQdm/p0Nqy8GZtkRDRb8icX2qitzMV973W7SFBlSVLfnkRBbu3QGhChnBJjWBmq3atG+xO/vbyt4lFsIRs0N9FTkKMJnbmr+R7Tb4yT0PpPOYo5SvNJMHiU86WE4=', 'realName': 'hhh', 'age': 18, 'sex': 1, 'birthDay': 1633276800000, 'userLevel': 10, 'phone': '123456', 'role': 1, 'status': 1, 'imagePath': None, 'createTime': None, 'modifyTime': 1634456428067, 'lastActiveTime': None, 'deleted': None, 'wxOpenId': None}}
+
+
+    </pre>
+    </div>
+    </td>
+    <td align="right">
+        <a hidden="hidden" href="../images/">
+            <img   src="../images/" height="200px" width="400px"/>
+        </a>
+    </td>
+</tr>
+
+
+
+<tr id='pt1_6' class='hiddenRow'>
+    <td class='passCase' width='300px'><div class='testcase'>test_006_loglist</div></td>
+    <td colspan='5' align='left' width='600px'> <!--print 输出框位置-->
+    <!--默认收起错误信息 -Findyou
+    <button id='btn_pt1_6' type="button"  class="btn btn-danger btn-xs collapsed" data-toggle="collapse" data-target='#div_pt1_6'>通过</button>
+    <div id='div_pt1_6' class="collapse">  -->
+    <!-- 默认展开错误信息 -Findyou -->
+    <button id='btn_pt1_6' type="button"  class="btn btn-danger btn-xs" data-toggle="collapse" data-target='#div_pt1_6'>通过</button>
+    <div id='div_pt1_6' class="collapse in">
+    <pre style="overflow-y:scroll; overflow-x:hidden;height:200px; width:600px; margin:auto; border:1px solid #e1e1e1;">
+    
+pt1_6: MmY3Y2FlYWQtZWU1OC00N2IwLWFkZjQtNWU2MjhmMGJlODFh
+{'code': 1, 'message': '成功', 'response': {'total': 0, 'list': [], 'pageNum': 1, 'pageSize': 10, 'size': 0, 'startRow': 0, 'endRow': 0, 'pages': 0, 'prePage': 0, 'nextPage': 0, 'isFirstPage': True, 'isLastPage': True, 'hasPreviousPage': False, 'hasNextPage': False, 'navigatePages': 8, 'navigatepageNums': [], 'navigateFirstPage': 0, 'navigateLastPage': 0}}
+
+
+    </pre>
+    </div>
+    </td>
+    <td align="right">
+        <a hidden="hidden" href="../images/">
+            <img   src="../images/" height="200px" width="400px"/>
+        </a>
+    </td>
+</tr>
+
+
+
+<tr id='ft1_7' class='none'>
+    <td class='failCase' width='300px'><div class='testcase'>test_007_delete</div></td>
+    <td colspan='5' align='left' width='600px'> <!--print 输出框位置-->
+    <!--默认收起错误信息 -Findyou
+    <button id='btn_ft1_7' type="button"  class="btn btn-danger btn-xs collapsed" data-toggle="collapse" data-target='#div_ft1_7'>失败</button>
+    <div id='div_ft1_7' class="collapse">  -->
+    <!-- 默认展开错误信息 -Findyou -->
+    <button id='btn_ft1_7' type="button"  class="btn btn-danger btn-xs" data-toggle="collapse" data-target='#div_ft1_7'>失败</button>
+    <div id='div_ft1_7' class="collapse in">
+    <pre style="overflow-y:scroll; overflow-x:hidden;height:200px; width:600px; margin:auto; border:1px solid #e1e1e1;">
+    
+ft1_7: MDVkZTJlMzYtNmUzYi00NjgwLTllN2MtM2VmMDkyZGY4NWUw
+{'code': 500, 'message': '系统内部错误', 'response': None}
+Traceback (most recent call last):
+  File "F:\01代码\接口自动化\unittest_kashixitong\case\kaoshihoutai.py", line 64, in test_007_delete
+    self.assertEqual(result_k.json()['message'], expect_result)
+AssertionError: '系统内部错误' != '成功'
+- 系统内部错误
++ 成功
+
+
+
+    </pre>
+    </div>
+    </td>
+    <td align="right">
+        <a hidden="hidden" href="../images/">
+            <img   src="../images/" height="200px" width="400px"/>
+        </a>
+    </td>
+</tr>
+
+
+
+<tr id='pt1_8' class='hiddenRow'>
+    <td class='passCase' width='300px'><div class='testcase'>test_008_selectstudent</div></td>
+    <td colspan='5' align='left' width='600px'> <!--print 输出框位置-->
+    <!--默认收起错误信息 -Findyou
+    <button id='btn_pt1_8' type="button"  class="btn btn-danger btn-xs collapsed" data-toggle="collapse" data-target='#div_pt1_8'>通过</button>
+    <div id='div_pt1_8' class="collapse">  -->
+    <!-- 默认展开错误信息 -Findyou -->
+    <button id='btn_pt1_8' type="button"  class="btn btn-danger btn-xs" data-toggle="collapse" data-target='#div_pt1_8'>通过</button>
+    <div id='div_pt1_8' class="collapse in">
+    <pre style="overflow-y:scroll; overflow-x:hidden;height:200px; width:600px; margin:auto; border:1px solid #e1e1e1;">
+    
+pt1_8: NzIyM2NjZmQtMGFlYi00ZDkzLTliNTItN2NhYjY3MGFmOWI1
+{'code': 1, 'message': '成功', 'response': {'total': 1, 'list': [{'id': 54538, 'userUuid': 'afff393b-07fb-4d2f-8e2d-8a5c81ac80f0', 'userName': 'tjj001', 'realName': 'tjj', 'age': 19, 'role': 1, 'sex': 1, 'birthDay': '2014-10-09 00:00:00', 'phone': '1001245657', 'lastActiveTime': '2021-10-10 19:05:57', 'createTime': '2021-10-10 19:05:57', 'modifyTime': '2021-10-17 08:28:03', 'status': 1, 'userLevel': 1, 'imagePath': None}], 'pageNum': 1, 'pageSize': 10, 'size': 1, 'startRow': 1, 'endRow': 1, 'pages': 1, 'prePage': 0, 'nextPage': 0, 'isFirstPage': True, 'isLastPage': True, 'hasPreviousPage': False, 'hasNextPage': False, 'navigatePages': 8, 'navigatepageNums': [1], 'navigateFirstPage': 1, 'navigateLastPage': 1}}
+
+
+    </pre>
+    </div>
+    </td>
+    <td align="right">
+        <a hidden="hidden" href="../images/">
+            <img   src="../images/" height="200px" width="400px"/>
+        </a>
+    </td>
+</tr>
+
+
+
+<tr id='pt1_9' class='hiddenRow'>
+    <td class='passCase' width='300px'><div class='testcase'>test_009_insertstudent</div></td>
+    <td colspan='5' align='left' width='600px'> <!--print 输出框位置-->
+    <!--默认收起错误信息 -Findyou
+    <button id='btn_pt1_9' type="button"  class="btn btn-danger btn-xs collapsed" data-toggle="collapse" data-target='#div_pt1_9'>通过</button>
+    <div id='div_pt1_9' class="collapse">  -->
+    <!-- 默认展开错误信息 -Findyou -->
+    <button id='btn_pt1_9' type="button"  class="btn btn-danger btn-xs" data-toggle="collapse" data-target='#div_pt1_9'>通过</button>
+    <div id='div_pt1_9' class="collapse in">
+    <pre style="overflow-y:scroll; overflow-x:hidden;height:200px; width:600px; margin:auto; border:1px solid #e1e1e1;">
+    
+pt1_9: NzQ1ODU3MTMtYjI4Ny00MmNjLWFmNTUtMmQ0OGUxYWM2YzUz
+{'code': 1, 'message': '成功', 'response': {'id': 27895, 'userUuid': None, 'userName': 'xialuoke', 'password': 'Un2htB8ttkwEt2s53tnEmmVsD14PlKw1/gS0aosfBxI8FA3tLRGvK1d+Bv6BEzkc1aTNbu2fUozh9wxMw54srAYn8ot08lxHuLb+SyXwzmdetlXP75oJ0k00DKWyuPn1T+S86T6rC6Vq8R0PSXEh8FjNMNBpZuWQqFWLrh2XA08=', 'realName': '夏洛克', 'age': 32, 'sex': 1, 'birthDay': -1529740800000, 'userLevel': 12, 'phone': '221', 'role': 1, 'status': 1, 'imagePath': None, 'createTime': None, 'modifyTime': 1634456428802, 'lastActiveTime': None, 'deleted': None, 'wxOpenId': None}}
+
+
+    </pre>
+    </div>
+    </td>
+    <td align="right">
+        <a hidden="hidden" href="../images/">
+            <img   src="../images/" height="200px" width="400px"/>
+        </a>
+    </td>
+</tr>
+
+
+
+<tr id='pt1_10' class='hiddenRow'>
+    <td class='passCase' width='300px'><div class='testcase'>test_010_logout</div></td>
+    <td colspan='5' align='left' width='600px'> <!--print 输出框位置-->
+    <!--默认收起错误信息 -Findyou
+    <button id='btn_pt1_10' type="button"  class="btn btn-danger btn-xs collapsed" data-toggle="collapse" data-target='#div_pt1_10'>通过</button>
+    <div id='div_pt1_10' class="collapse">  -->
+    <!-- 默认展开错误信息 -Findyou -->
+    <button id='btn_pt1_10' type="button"  class="btn btn-danger btn-xs" data-toggle="collapse" data-target='#div_pt1_10'>通过</button>
+    <div id='div_pt1_10' class="collapse in">
+    <pre style="overflow-y:scroll; overflow-x:hidden;height:200px; width:600px; margin:auto; border:1px solid #e1e1e1;">
+    
+pt1_10: MGQ4NjZmOTEtYTkzNy00MDM0LWFhMDctMDc4ZGUwN2QxZTFh
+{'code': 1, 'message': '成功', 'response': None}
+
+
+    </pre>
+    </div>
+    </td>
+    <td align="right">
+        <a hidden="hidden" href="../images/">
+            <img   src="../images/" height="200px" width="400px"/>
+        </a>
+    </td>
+</tr>
+
+
+
+<tr class='failClass warning'>
+    <td>kaoshixitong001.MyTestCase</td>
+    <td class="text-center">10</td>
+    <td class="text-center">9</td>
+    <td class="text-center">1</td>
+    <td class="text-center">0</td>
+    <td class="text-center"><a href="javascript:showClassDetail('c2',10)" class="case_detail" id='c2'>详细</a></td>
+    <td class="text-center">Assert or Error Image</td>
+</tr>
+
+<tr id='pt2_1' class='hiddenRow'>
+    <td class='passCase' width='300px'><div class='testcase'>test_001_login</div></td>
+    <td colspan='5' align='left' width='600px'> <!--print 输出框位置-->
+    <!--默认收起错误信息 -Findyou
+    <button id='btn_pt2_1' type="button"  class="btn btn-danger btn-xs collapsed" data-toggle="collapse" data-target='#div_pt2_1'>通过</button>
+    <div id='div_pt2_1' class="collapse">  -->
+    <!-- 默认展开错误信息 -Findyou -->
+    <button id='btn_pt2_1' type="button"  class="btn btn-danger btn-xs" data-toggle="collapse" data-target='#div_pt2_1'>通过</button>
+    <div id='div_pt2_1' class="collapse in">
+    <pre style="overflow-y:scroll; overflow-x:hidden;height:200px; width:600px; margin:auto; border:1px solid #e1e1e1;">
+    
+pt2_1: {'code': 1, 'message': '成功', 'response': {'id': None, 'userUuid': None, 'userName': 'student', 'password': None, 'realName': None, 'age': None, 'sex': None, 'birthDay': None, 'userLevel': None, 'phone': None, 'role': None, 'status': None, 'imagePath': None, 'createTime': None, 'modifyTime': None, 'lastActiveTime': None, 'deleted': None, 'wxOpenId': None}}
+
+
+    </pre>
+    </div>
+    </td>
+    <td align="right">
+        <a hidden="hidden" href="../images/">
+            <img   src="../images/" height="200px" width="400px"/>
+        </a>
+    </td>
+</tr>
+
+
+
+<tr id='pt2_2' class='hiddenRow'>
+    <td class='passCase' width='300px'><div class='testcase'>test_002_register</div></td>
+    <td colspan='5' align='left' width='600px'> <!--print 输出框位置-->
+    <!--默认收起错误信息 -Findyou
+    <button id='btn_pt2_2' type="button"  class="btn btn-danger btn-xs collapsed" data-toggle="collapse" data-target='#div_pt2_2'>通过</button>
+    <div id='div_pt2_2' class="collapse">  -->
+    <!-- 默认展开错误信息 -Findyou -->
+    <button id='btn_pt2_2' type="button"  class="btn btn-danger btn-xs" data-toggle="collapse" data-target='#div_pt2_2'>通过</button>
+    <div id='div_pt2_2' class="collapse in">
+    <pre style="overflow-y:scroll; overflow-x:hidden;height:200px; width:600px; margin:auto; border:1px solid #e1e1e1;">
+    
+pt2_2: {'code': 1, 'message': '成功', 'response': None}
+
+
+    </pre>
+    </div>
+    </td>
+    <td align="right">
+        <a hidden="hidden" href="../images/">
+            <img   src="../images/" height="200px" width="400px"/>
+        </a>
+    </td>
+</tr>
+
+
+
+<tr id='pt2_3' class='hiddenRow'>
+    <td class='passCase' width='300px'><div class='testcase'>test_003_register</div></td>
+    <td colspan='5' align='left' width='600px'> <!--print 输出框位置-->
+    <!--默认收起错误信息 -Findyou
+    <button id='btn_pt2_3' type="button"  class="btn btn-danger btn-xs collapsed" data-toggle="collapse" data-target='#div_pt2_3'>通过</button>
+    <div id='div_pt2_3' class="collapse">  -->
+    <!-- 默认展开错误信息 -Findyou -->
+    <button id='btn_pt2_3' type="button"  class="btn btn-danger btn-xs" data-toggle="collapse" data-target='#div_pt2_3'>通过</button>
+    <div id='div_pt2_3' class="collapse in">
+    <pre style="overflow-y:scroll; overflow-x:hidden;height:200px; width:600px; margin:auto; border:1px solid #e1e1e1;">
+    
+pt2_3: {'code': 2, 'message': '用户已存在', 'response': None}
+
+
+    </pre>
+    </div>
+    </td>
+    <td align="right">
+        <a hidden="hidden" href="../images/">
+            <img   src="../images/" height="200px" width="400px"/>
+        </a>
+    </td>
+</tr>
+
+
+
+<tr id='pt2_4' class='hiddenRow'>
+    <td class='passCase' width='300px'><div class='testcase'>test_004_pagelist</div></td>
+    <td colspan='5' align='left' width='600px'> <!--print 输出框位置-->
+    <!--默认收起错误信息 -Findyou
+    <button id='btn_pt2_4' type="button"  class="btn btn-danger btn-xs collapsed" data-toggle="collapse" data-target='#div_pt2_4'>通过</button>
+    <div id='div_pt2_4' class="collapse">  -->
+    <!-- 默认展开错误信息 -Findyou -->
+    <button id='btn_pt2_4' type="button"  class="btn btn-danger btn-xs" data-toggle="collapse" data-target='#div_pt2_4'>通过</button>
+    <div id='div_pt2_4' class="collapse in">
+    <pre style="overflow-y:scroll; overflow-x:hidden;height:200px; width:600px; margin:auto; border:1px solid #e1e1e1;">
+    
+pt2_4: {'code': 1, 'message': '成功', 'response': {'total': 0, 'list': [], 'pageNum': 1, 'pageSize': 10, 'size': 0, 'startRow': 0, 'endRow': 0, 'pages': 0, 'prePage': 0, 'nextPage': 0, 'isFirstPage': True, 'isLastPage': True, 'hasPreviousPage': False, 'hasNextPage': False, 'navigatePages': 8, 'navigatepageNums': [], 'navigateFirstPage': 0, 'navigateLastPage': 0}}
+
+
+    </pre>
+    </div>
+    </td>
+    <td align="right">
+        <a hidden="hidden" href="../images/">
+            <img   src="../images/" height="200px" width="400px"/>
+        </a>
+    </td>
+</tr>
+
+
+
+<tr id='pt2_5' class='hiddenRow'>
+    <td class='passCase' width='300px'><div class='testcase'>test_005_kaoshijilu</div></td>
+    <td colspan='5' align='left' width='600px'> <!--print 输出框位置-->
+    <!--默认收起错误信息 -Findyou
+    <button id='btn_pt2_5' type="button"  class="btn btn-danger btn-xs collapsed" data-toggle="collapse" data-target='#div_pt2_5'>通过</button>
+    <div id='div_pt2_5' class="collapse">  -->
+    <!-- 默认展开错误信息 -Findyou -->
+    <button id='btn_pt2_5' type="button"  class="btn btn-danger btn-xs" data-toggle="collapse" data-target='#div_pt2_5'>通过</button>
+    <div id='div_pt2_5' class="collapse in">
+    <pre style="overflow-y:scroll; overflow-x:hidden;height:200px; width:600px; margin:auto; border:1px solid #e1e1e1;">
+    
+pt2_5: {'code': 1, 'message': '成功', 'response': {'total': 3, 'list': [{'id': 504226, 'createTime': '2021-10-10 20:06:23', 'userScore': '2', 'subjectName': '英语-一年级', 'subjectId': 81, 'questionCount': 1, 'questionCorrect': 1, 'paperScore': '2', 'doTime': '6 秒', 'paperType': 1, 'systemScore': '2', 'status': 2, 'paperName': '英语'}, {'id': 504215, 'createTime': '2021-10-10 20:04:59', 'userScore': '2', 'subjectName': '英语-一年级', 'subjectId': 81, 'questionCount': 1, 'questionCorrect': 1, 'paperScore': '2', 'doTime': '6 秒', 'paperType': 1, 'systemScore': '2', 'status': 2, 'paperName': '英语'}, {'id': 504214, 'createTime': '2021-10-10 20:03:19', 'userScore': '0', 'subjectName': '英语-一年级', 'subjectId': 81, 'questionCount': 1, 'questionCorrect': 0, 'paperScore': '2', 'doTime': '1分 0秒', 'paperType': 1, 'systemScore': '0', 'status': 2, 'paperName': '英语'}], 'pageNum': 1, 'pageSize': 10, 'size': 3, 'startRow': 1, 'endRow': 3, 'pages': 1, 'prePage': 0, 'nextPage': 0, 'isFirstPage': True, 'isLastPage': True, 'hasPreviousPage': False, 'hasNextPage': False, 'navigatePages': 8, 'navigatepageNums': [1], 'navigateFirstPage': 1, 'navigateLastPage': 1}}
+
+
+    </pre>
+    </div>
+    </td>
+    <td align="right">
+        <a hidden="hidden" href="../images/">
+            <img   src="../images/" height="200px" width="400px"/>
+        </a>
+    </td>
+</tr>
+
+
+
+<tr id='ft2_6' class='none'>
+    <td class='failCase' width='300px'><div class='testcase'>test_006_cuotiben</div></td>
+    <td colspan='5' align='left' width='600px'> <!--print 输出框位置-->
+    <!--默认收起错误信息 -Findyou
+    <button id='btn_ft2_6' type="button"  class="btn btn-danger btn-xs collapsed" data-toggle="collapse" data-target='#div_ft2_6'>失败</button>
+    <div id='div_ft2_6' class="collapse">  -->
+    <!-- 默认展开错误信息 -Findyou -->
+    <button id='btn_ft2_6' type="button"  class="btn btn-danger btn-xs" data-toggle="collapse" data-target='#div_ft2_6'>失败</button>
+    <div id='div_ft2_6' class="collapse in">
+    <pre style="overflow-y:scroll; overflow-x:hidden;height:200px; width:600px; margin:auto; border:1px solid #e1e1e1;">
+    
+ft2_6: {'code': 500, 'message': '系统内部错误', 'response': None}
+Traceback (most recent call last):
+  File "F:\01代码\接口自动化\unittest_kashixitong\case\kaoshixitong001.py", line 59, in test_006_cuotiben
+    self.assertEqual(result_k.json()['message'], expect_result)
+AssertionError: '系统内部错误' != '成功'
+- 系统内部错误
++ 成功
+
+
+
+    </pre>
+    </div>
+    </td>
+    <td align="right">
+        <a hidden="hidden" href="../images/">
+            <img   src="../images/" height="200px" width="400px"/>
+        </a>
+    </td>
+</tr>
+
+
+
+<tr id='pt2_7' class='hiddenRow'>
+    <td class='passCase' width='300px'><div class='testcase'>test_007_gerenzhongxin</div></td>
+    <td colspan='5' align='left' width='600px'> <!--print 输出框位置-->
+    <!--默认收起错误信息 -Findyou
+    <button id='btn_pt2_7' type="button"  class="btn btn-danger btn-xs collapsed" data-toggle="collapse" data-target='#div_pt2_7'>通过</button>
+    <div id='div_pt2_7' class="collapse">  -->
+    <!-- 默认展开错误信息 -Findyou -->
+    <button id='btn_pt2_7' type="button"  class="btn btn-danger btn-xs" data-toggle="collapse" data-target='#div_pt2_7'>通过</button>
+    <div id='div_pt2_7' class="collapse in">
+    <pre style="overflow-y:scroll; overflow-x:hidden;height:200px; width:600px; margin:auto; border:1px solid #e1e1e1;">
+    
+pt2_7: {'code': 1, 'message': '成功', 'response': {'id': 54538, 'userUuid': 'afff393b-07fb-4d2f-8e2d-8a5c81ac80f0', 'userName': 'tjj001', 'realName': 'tjj', 'age': 19, 'role': 1, 'sex': 1, 'birthDay': '2014-10-09 00:00:00', 'phone': '1001245657', 'lastActiveTime': '2021-10-10 19:05:57', 'createTime': '2021-10-10 19:05:57', 'modifyTime': '2021-10-17 08:28:03', 'status': 1, 'userLevel': 1, 'imagePath': None}}
+
+
+    </pre>
+    </div>
+    </td>
+    <td align="right">
+        <a hidden="hidden" href="../images/">
+            <img   src="../images/" height="200px" width="400px"/>
+        </a>
+    </td>
+</tr>
+
+
+
+<tr id='pt2_8' class='hiddenRow'>
+    <td class='passCase' width='300px'><div class='testcase'>test_008_yonghudongtai</div></td>
+    <td colspan='5' align='left' width='600px'> <!--print 输出框位置-->
+    <!--默认收起错误信息 -Findyou
+    <button id='btn_pt2_8' type="button"  class="btn btn-danger btn-xs collapsed" data-toggle="collapse" data-target='#div_pt2_8'>通过</button>
+    <div id='div_pt2_8' class="collapse">  -->
+    <!-- 默认展开错误信息 -Findyou -->
+    <button id='btn_pt2_8' type="button"  class="btn btn-danger btn-xs" data-toggle="collapse" data-target='#div_pt2_8'>通过</button>
+    <div id='div_pt2_8' class="collapse in">
+    <pre style="overflow-y:scroll; overflow-x:hidden;height:200px; width:600px; margin:auto; border:1px solid #e1e1e1;">
+    
+pt2_8: {'code': 1, 'message': '成功', 'response': [{'id': 1172820, 'userId': 54538, 'userName': 'tjj001', 'realName': 'tjj', 'content': 'tjj001 登录了学之思考试系统', 'createTime': '2021-10-17 15:40:31'}, {'id': 1172819, 'userId': 54538, 'userName': 'tjj001', 'realName': 'tjj', 'content': 'tjj001 登录了学之思考试系统', 'createTime': '2021-10-17 15:40:31'}, {'id': 1172818, 'userId': 54538, 'userName': 'tjj001', 'realName': 'tjj', 'content': 'tjj001 登录了学之思考试系统', 'createTime': '2021-10-17 15:40:30'}, {'id': 1172817, 'userId': 54538, 'userName': 'tjj001', 'realName': 'tjj', 'content': 'tjj001 登录了学之思考试系统', 'createTime': '2021-10-17 15:40:30'}, {'id': 1172816, 'userId': 54538, 'userName': 'tjj001', 'realName': 'tjj', 'content': 'tjj001 登录了学之思考试系统', 'createTime': '2021-10-17 15:40:29'}, {'id': 1172687, 'userId': 54538, 'userName': 'tjj001', 'realName': 'tjj', 'content': 'tjj001 登出了学之思考试系统', 'createTime': '2021-10-17 08:28:03'}, {'id': 1172686, 'userId': 54538, 'userName': 'tjj001', 'realName': 'tjj', 'content': 'tjj001 登录了学之思考试系统', 'createTime': '2021-10-17 08:28:03'}, {'id': 1172685, 'userId': 54538, 'userName': 'tjj001', 'realName': 'tjj', 'content': 'tjj001 更新了个人资料', 'createTime': '2021-10-17 08:28:03'}, {'id': 1172684, 'userId': 54538, 'userName': 'tjj001', 'realName': 'tjj', 'content': 'tjj001 登录了学之思考试系统', 'createTime': '2021-10-17 08:28:03'}, {'id': 1172683, 'userId': 54538, 'userName': 'tjj001', 'realName': 'tjj', 'content': 'tjj001 登录了学之思考试系统', 'createTime': '2021-10-17 08:28:02'}]}
+
+
+    </pre>
+    </div>
+    </td>
+    <td align="right">
+        <a hidden="hidden" href="../images/">
+            <img   src="../images/" height="200px" width="400px"/>
+        </a>
+    </td>
+</tr>
+
+
+
+<tr id='pt2_9' class='hiddenRow'>
+    <td class='passCase' width='300px'><div class='testcase'>test_009_gerenxinxixiugai</div></td>
+    <td colspan='5' align='left' width='600px'> <!--print 输出框位置-->
+    <!--默认收起错误信息 -Findyou
+    <button id='btn_pt2_9' type="button"  class="btn btn-danger btn-xs collapsed" data-toggle="collapse" data-target='#div_pt2_9'>通过</button>
+    <div id='div_pt2_9' class="collapse">  -->
+    <!-- 默认展开错误信息 -Findyou -->
+    <button id='btn_pt2_9' type="button"  class="btn btn-danger btn-xs" data-toggle="collapse" data-target='#div_pt2_9'>通过</button>
+    <div id='div_pt2_9' class="collapse in">
+    <pre style="overflow-y:scroll; overflow-x:hidden;height:200px; width:600px; margin:auto; border:1px solid #e1e1e1;">
+    
+pt2_9: {'code': 1, 'message': '成功', 'response': None}
+
+
+    </pre>
+    </div>
+    </td>
+    <td align="right">
+        <a hidden="hidden" href="../images/">
+            <img   src="../images/" height="200px" width="400px"/>
+        </a>
+    </td>
+</tr>
+
+
+
+<tr id='pt2_10' class='hiddenRow'>
+    <td class='passCase' width='300px'><div class='testcase'>test_010_logout</div></td>
+    <td colspan='5' align='left' width='600px'> <!--print 输出框位置-->
+    <!--默认收起错误信息 -Findyou
+    <button id='btn_pt2_10' type="button"  class="btn btn-danger btn-xs collapsed" data-toggle="collapse" data-target='#div_pt2_10'>通过</button>
+    <div id='div_pt2_10' class="collapse">  -->
+    <!-- 默认展开错误信息 -Findyou -->
+    <button id='btn_pt2_10' type="button"  class="btn btn-danger btn-xs" data-toggle="collapse" data-target='#div_pt2_10'>通过</button>
+    <div id='div_pt2_10' class="collapse in">
+    <pre style="overflow-y:scroll; overflow-x:hidden;height:200px; width:600px; margin:auto; border:1px solid #e1e1e1;">
+    
+pt2_10: {'code': 1, 'message': '成功', 'response': None}
+
+
+    </pre>
+    </div>
+    </td>
+    <td align="right">
+        <a hidden="hidden" href="../images/">
+            <img   src="../images/" height="200px" width="400px"/>
+        </a>
+    </td>
+</tr>
+
+
+
+<tr id='total_row' class="text-center active">
+    <td>总计</td>
+    <td>20</td>
+    <td>18</td>
+    <td>2</td>
+    <td>0</td>
+    <td>通过率：90.00%</td>
+    <td> <a href="" target="_blank"></a></td>
+</tr>
+</table>
+
+<div id='ending'>&nbsp;</div>
+    <div style=" position:fixed;right:50px; bottom:30px; width:20px; height:20px;cursor:pointer">
+    <a href="#"><span class="glyphicon glyphicon-eject" style = "font-size:30px;" aria-hidden="true">
+    </span></a></div>
+    
+</body>
+</html>
